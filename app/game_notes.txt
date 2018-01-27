@@ -33,4 +33,3 @@ All tiles except for the ones adjacent to the starting towers begin the game as 
 Terrain is randomly generated.
 Tiles adjacent to player units are revealed.
 
-This game is the best.
