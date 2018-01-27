@@ -32,3 +32,5 @@ There are 4 types of terrain in the game: Mountains, Desert, Forest, and Fields.
 All tiles except for the ones adjacent to the starting towers begin the game as unknown terrain.
 Terrain is randomly generated.
 Tiles adjacent to player units are revealed.
+
+This game is the best.
