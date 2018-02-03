@@ -60,7 +60,6 @@ class Game(object):
 
         return False
 
-
     def board_initializer(self):
         count_per_column = 10
         count_per_row = count_per_column * 2
@@ -152,6 +151,7 @@ class Game(object):
 
     def process_user_input(self, event):
         state = States.BOARD_GAME
+
         if self.music.music_button.is_clicked(event):
             self.music.toggle_music()
         elif self.ready_button.is_clicked(event):
@@ -159,5 +159,8 @@ class Game(object):
             self.changephase()
         elif self.back_button.is_clicked(event):
             state = States.MENU
+
+        self.music.music_button.update_highlight_state(event)
+
         return state
 

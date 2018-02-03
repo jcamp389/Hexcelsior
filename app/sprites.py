@@ -1,45 +1,60 @@
 import pygame
+from app.properties import Properties as Props
 
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, color):
         pygame.sprite.Sprite.__init__(self)
 
-
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.color = color
+        self.highlighted_color = Props.red
         self.rect = pygame.Rect(x, y, width, height)
 
+        self.is_highlighted = False
         self.visible = True
         self.enabled = True
-
 
     def draw(self, screen):
         if self.visible is False:
             return
-        rect = pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.width, self.height), 2)
+
+        background_color = self.highlighted_color if self.is_highlighted else self.color
+        rect = pygame.draw.rect(screen, background_color, pygame.Rect(self.x, self.y, self.width, self.height), 2)
         self.draw_content(rect, screen)
 
+    def is_mouse_over_button(self, event):
+        if not hasattr(event, "pos"):
+            return False
+
+        return self.rect.left < event.pos[0] < self.rect.right and self.rect.top < event.pos[1] < self.rect.bottom
 
     def is_clicked(self, event):
-        if self.enabled == False:
+        if not self.enabled:
             return False
         if event.type != pygame.MOUSEBUTTONDOWN:
             return False
 
-
-        if self.rect.left < event.pos[0] < self.rect.right and self.rect.top < event.pos[1] < self.rect.bottom:
+        if self.is_mouse_over_button(event):
             return True
+
         return False
+
+    def update_highlight_state(self, event):
+        if self.is_mouse_over_button(event):
+            self.is_highlighted = True
+        else:
+            self.is_highlighted = False
 
     def set_visibility(self, visible=True):
         self.visible = visible
 
     def set_enabled(self, enabled=True):
         self.enabled = enabled
+
 
 class LabelButton(Button):
     def __init__(self, title, *args, **kwargs):
@@ -49,7 +64,8 @@ class LabelButton(Button):
 
     def draw_content(self, rect, screen):
         font = pygame.font.Font(None, 15, bold=True, italic=False)
-        label = font.render(self.title, True, self.color)
+        text_color = self.highlighted_color if self.is_highlighted else self.color
+        label = font.render(self.title, True, text_color)
         label_pos = label.get_rect()
         label_pos.centerx = rect.centerx
         label_pos.centery = rect.centery
@@ -63,9 +79,9 @@ class ImageButton(Button):
         self.image = pygame.image.load(path)
         self.image = pygame.transform.scale(self.image, (width, height))
 
-
     def draw_content(self, rect, screen):
         screen.blit(self.image, rect.topleft)
+
 
 class BoardTile(pygame.sprite.Sprite):
     def __init__(self, top_right, top_left, left, bot_left, bot_right, right, tile_color):

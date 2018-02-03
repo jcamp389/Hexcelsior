@@ -13,7 +13,6 @@ class Main(object):
         pygame.font.init()
         pygame.mixer.init()
 
-
         self.screen = pygame.display.set_mode(Props.size)
         self.surface = pygame.Surface(self.screen.get_size())
         pygame.display.set_caption("HEXCELSIOR")
@@ -35,7 +34,6 @@ class Main(object):
             elif state == States.BOARD_GAME:
                 state = self.game.process_user_input(event)
 
-
         return state
 
     def refresh(self, state):
@@ -51,6 +49,7 @@ class Main(object):
             state = self.process_user_input(state)
             self.refresh(state)
             pygame.display.flip()
+
 
 if __name__ == '__main__':
     Main().run()
