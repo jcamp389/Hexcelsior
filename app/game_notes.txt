@@ -12,7 +12,6 @@ TODO-LIST:
     Medium Priority:
         - change tile colors to terrain
         - display time remaining in planning phase
-        - highlighting for buttons
         - create label class
 
     Low Priority:
@@ -20,7 +19,7 @@ TODO-LIST:
         - upgrade the look of the menu screen
 
     Nice to have but not required:
-        - change the play and exit menu buttons to be hexagon shaped
+        - change the play and exit menu buttons to be hexagon shaped (maybe have a RectangleButton class and a HexagonButton class which both inherit from Button)
 
 The Start of the Game
 Each player starts at a tower, marked by a grey tile, with ___ units in tiles adjacent to their towers. The player may choose which tiles his units start in.
