@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Button(pygame.sprite.Sprite):
@@ -79,6 +80,9 @@ class BoardTile(pygame.sprite.Sprite):
         self.left = left
         self.tile_color = tile_color
         self.rect = pygame.Rect(top_left[0], top_left[1], top_right[0] - top_left[0], bot_left[1] - top_left[1])
+
+        self.tile_terrain = ["images/sand.jpg"]
+        self.random_tile_terrain = random.choice(self.tile_terrain)
 
     def get_tile_coordinates(self):
         return self.top_left, self.top_right, self.right, self.bot_right, self.bot_left, self.left

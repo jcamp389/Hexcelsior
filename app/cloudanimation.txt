@@ -1,0 +1,6 @@
+# cloud_start_x = 0
+            # cloud_start_y = 0
+            # cloud01_speed = 10
+            # screen.blit(cloud01, (cloud_start_x, cloud_start_y))
+            # pygame.display.flip()
+            # cloud_start_x += cloud01_speed

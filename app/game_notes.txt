@@ -18,6 +18,7 @@ TODO-LIST:
     Low Priority:
         - add more music functionality
         - upgrade the look of the menu screen
+        - give credit to music and image creators
 
     Nice to have but not required:
         - change the play and exit menu buttons to be hexagon shaped

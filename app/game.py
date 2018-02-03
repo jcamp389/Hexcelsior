@@ -35,7 +35,8 @@ class Game(object):
         self.BOARDLENGTH = Props.SCREENLENGTH * .8
         self.ready_button = LabelButton("READY", Props.SCREENLENGTH * .6, Props.SCREENHEIGHT * 0, 100, 40, Props.white)
 
-
+        self.terrain = ["images/sand.jpg"]
+        self.random_terrain = pygame.image.load(random.choice(self.terrain))
 
         unit_scale_factor = int((self.BOARDHEIGHT/10) * .8)
         self.bow = ImageButton('images/bow.png', 830, 115, unit_scale_factor, unit_scale_factor, Props.black)
@@ -142,12 +143,13 @@ class Game(object):
                 current_tile = self.board[i][j]
                 if current_tile.contains(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
                     currently_highlighted_tile = current_tile
-                draw_color = Props.grey if current_tile == currently_highlighted_tile else current_tile.tile_color
+                terrain = self.random_terrain if current_tile == currently_highlighted_tile else current_tile.tile_color
                 if self.is_base_tile(current_tile):
                     draw_color = Props.black
 
-                pygame.draw.polygon(self.background, draw_color, current_tile.get_tile_coordinates(), 0)
+                self.random_terrain.blit(self.background, (0, 0))
                 # border pass
+                
                 pygame.draw.polygon(self.background, Props.grey, current_tile.get_tile_coordinates(), 2)
 
     def process_user_input(self, event):
