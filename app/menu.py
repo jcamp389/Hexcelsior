@@ -11,8 +11,6 @@ class Menu(object):
         self.surface = surface
         self.music = music
 
-
-
         intro_screen_background = pygame.image.load('images/Intro_Screen_Background.jpg')
         self.intro_screen_background = pygame.transform.scale(intro_screen_background, (Props.SCREENLENGTH, Props.SCREENHEIGHT))
 
@@ -34,6 +32,7 @@ class Menu(object):
 
     def process_user_input(self, event):
         state = States.MENU
+
         if pygame.mouse.get_pressed()[0] == 1:
             if self.exit_button.is_clicked(event):
                 state = States.QUIT
@@ -41,4 +40,9 @@ class Menu(object):
                 state = States.BOARD_GAME
             elif self.music.music_button.is_clicked(event):
                 self.music.toggle_music()
+
+        self.exit_button.update_highlight_state(event)
+        self.play_button.update_highlight_state(event)
+        self.music.music_button.update_highlight_state(event)
+
         return state

@@ -6,6 +6,7 @@ import pygame
 import threading
 from app.utils import Utils
 
+
 class Player(object):
     def __init__(self, name, number, color, base_tile):
         self.name = name
@@ -14,6 +15,7 @@ class Player(object):
         self.base_tile = base_tile
         self.cost = 4
         self.units = []
+
 
 class Game(object):
     def __init__(self, screen, surface, music):
@@ -35,19 +37,16 @@ class Game(object):
         self.BOARDLENGTH = Props.SCREENLENGTH * .8
         self.ready_button = LabelButton("READY", Props.SCREENLENGTH * .6, Props.SCREENHEIGHT * 0, 100, 40, Props.white)
 
-
-
         unit_scale_factor = int((self.BOARDHEIGHT/10) * .8)
         self.bow = ImageButton('images/bow.png', 830, 115, unit_scale_factor, unit_scale_factor, Props.black)
         self.sword = ImageButton('images/sword.png',870, 115, unit_scale_factor, unit_scale_factor, Props.black)
         self.spear = ImageButton('images/spear.png', 910, 115, unit_scale_factor, unit_scale_factor, Props.black)
         self.horseman = ImageButton('images/horseman1.png', 950, 115, unit_scale_factor, unit_scale_factor, Props.black)
 
-
         self.changephase(should_change_phase=False)
         self.board = self.board_initializer()
 
-        #we are manually going to create players for now
+        # we are manually going to create players for now
         player_1 = Player(name="Joel", number=1, color=Props.grey, base_tile=self.board[4][5])
         player_2 = Player(name="John", number=2, color=Props.green, base_tile=self.board[15][2])
         player_3 = Player(name="Michael", number=3, color=Props.red, base_tile=self.board[15][7])
@@ -161,6 +160,12 @@ class Game(object):
             state = States.MENU
 
         self.music.music_button.update_highlight_state(event)
+        self.ready_button.update_highlight_state(event)
+        self.back_button.update_highlight_state(event)
+        self.bow.update_highlight_state(event)
+        self.sword.update_highlight_state(event)
+        self.spear.update_highlight_state(event)
+        self.horseman.update_highlight_state(event)
 
         return state
 
