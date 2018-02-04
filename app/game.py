@@ -52,6 +52,10 @@ class Game(object):
         player_3 = Player(name="Michael", number=3, color=Props.red, base_tile=self.board[15][7])
         self.players = [player_1, player_2, player_3]
 
+        self.buttons = pygame.sprite.Group()
+        self.buttons.add(self.music.music_button, self.back_button, self.ready_button,
+                         self.bow, self.sword, self.spear, self.horseman)
+
     def is_base_tile(self, tile):
         for player in self.players:
             if player.base_tile == tile:
@@ -151,21 +155,14 @@ class Game(object):
     def process_user_input(self, event):
         state = States.BOARD_GAME
 
-        if self.music.music_button.is_clicked(event):
+        self.buttons.update(event)
+
+        if self.music.music_button.is_clicked:
             self.music.toggle_music()
-        elif self.ready_button.is_clicked(event):
+        elif self.ready_button.is_clicked:
             self.timer.cancel()
             self.changephase()
-        elif self.back_button.is_clicked(event):
+        elif self.back_button.is_clicked:
             state = States.MENU
 
-        self.music.music_button.update_highlight_state(event)
-        self.ready_button.update_highlight_state(event)
-        self.back_button.update_highlight_state(event)
-        self.bow.update_highlight_state(event)
-        self.sword.update_highlight_state(event)
-        self.spear.update_highlight_state(event)
-        self.horseman.update_highlight_state(event)
-
         return state
-

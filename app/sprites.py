@@ -15,16 +15,21 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.Rect(x, y, width, height)
 
         self.is_highlighted = False
+        self.is_clicked = False
         self.visible = True
         self.enabled = True
 
-    def draw(self, screen):
+    def draw(self, surface):
         if self.visible is False:
             return
 
         background_color = self.highlighted_color if self.is_highlighted else self.color
-        rect = pygame.draw.rect(screen, background_color, pygame.Rect(self.x, self.y, self.width, self.height), 2)
-        self.draw_content(rect, screen)
+        rect = pygame.draw.rect(surface, background_color, pygame.Rect(self.x, self.y, self.width, self.height), 2)
+        self.draw_content(rect, surface)
+
+    def update(self, event):
+        self.update_highlight_state(event)
+        self.update_click_state(event)
 
     def is_mouse_over_button(self, event):
         if not hasattr(event, "pos"):
@@ -32,16 +37,15 @@ class Button(pygame.sprite.Sprite):
 
         return self.rect.left < event.pos[0] < self.rect.right and self.rect.top < event.pos[1] < self.rect.bottom
 
-    def is_clicked(self, event):
+    def update_click_state(self, event):
         if not self.enabled:
-            return False
-        if event.type != pygame.MOUSEBUTTONDOWN:
-            return False
+            self.is_clicked = False
+            return
 
-        if self.is_mouse_over_button(event):
-            return True
-
-        return False
+        if self.is_mouse_over_button(event) and event.type == pygame.MOUSEBUTTONDOWN:
+            self.is_clicked = True
+        else:
+            self.is_clicked = False
 
     def update_highlight_state(self, event):
         if self.is_mouse_over_button(event):
