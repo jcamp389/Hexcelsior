@@ -36,13 +36,13 @@ class Button(pygame.sprite.Sprite):
             self.is_clicked = False
             return
 
-        if self.__is_mouse_over_button(event) and event.type == pygame.MOUSEBUTTONDOWN:
+        if self._is_mouse_over_button(event) and event.type == pygame.MOUSEBUTTONDOWN:
             self.is_clicked = True
         else:
             self.is_clicked = False
 
     def update_highlight_state(self, event):
-        if self.__is_mouse_over_button(event):
+        if self._is_mouse_over_button(event):
             self.is_highlighted = True
         else:
             self.is_highlighted = False
@@ -53,7 +53,7 @@ class Button(pygame.sprite.Sprite):
     def set_enabled(self, enabled=True):
         self.enabled = enabled
 
-    def __is_mouse_over_button(self, event):
+    def _is_mouse_over_button(self, event):
         if not hasattr(event, "pos"):
             return False
 
