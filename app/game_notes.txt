@@ -17,6 +17,7 @@ TODO-LIST:
     Low Priority:
         - add more music functionality
         - upgrade the look of the menu screen
+        - explore using a new font for the in game text that fits the medieval theme
 
     Nice to have but not required:
         - change the play and exit menu buttons to be hexagon shaped (maybe have a RectangleButton class and a HexagonButton class which both inherit from Button)
