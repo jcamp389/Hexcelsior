@@ -46,6 +46,8 @@ class Game(object):
         self.changephase(should_change_phase=False)
         self.board = self.board_initializer()
 
+        self.turn_number = 1
+
         # we are manually going to create players for now
         player_1 = Player(name="Joel", number=1, color=Props.grey, base_tile=self.board[4][5])
         player_2 = Player(name="John", number=2, color=Props.green, base_tile=self.board[15][2])
@@ -105,6 +107,7 @@ class Game(object):
         self.horseman.draw(self.screen)
         self.board_game()
         self.display_phase()
+        self.display_turn_number()
         Utils.display_xy(self.screen)
         self.music.music_button.draw(self.screen)
 
@@ -117,7 +120,7 @@ class Game(object):
 
 
     def display_phase(self):
-        font = pygame.font.Font(None, 15, bold=True, italic=False)
+        font = pygame.font.Font(None, 20, bold=True, italic=False)
         phase_title = "PLANNING PHASE" if self.current_phase == self.PHASE_PLANNING else "ACTION PHASE"
         phase_label = font.render(phase_title, True, Props.red)
         phase_labelpos = phase_label.get_rect()
@@ -125,6 +128,16 @@ class Game(object):
         phase_labelpos.centerx = phase_rect.centerx
         phase_labelpos.centery = phase_rect.centery
         self.screen.blit(phase_label, (phase_labelpos.centerx - 35, phase_labelpos.centery - 5))
+
+    def display_turn_number(self):
+        font = pygame.font.Font(None, 20, bold=True, italic=False)
+        turn_text = "TURN " + str(self.turn_number)
+        turn_label = font.render(turn_text, True, Props.black)
+        turn_labelpos = turn_label.get_rect()
+        turn_rect = pygame.Rect(Props.SCREENLENGTH * .35, Props.SCREENHEIGHT * .01, 80, 15)
+        turn_labelpos.centerx = turn_rect.centerx
+        turn_labelpos.centery = turn_rect.centery
+        self.screen.blit(turn_label, (turn_labelpos.centerx - 135, turn_labelpos.centery - 5))
 
     def changephase(self, should_change_phase=True):
         self.timer = threading.Timer(5.0, self.changephase)
@@ -136,6 +149,10 @@ class Game(object):
             self.current_phase = self.PHASE_ACTION
         else:
             self.current_phase = self.PHASE_PLANNING
+            self.turn_number += 1
+
+
+
 
     def board_game(self):
         currently_highlighted_tile = None
