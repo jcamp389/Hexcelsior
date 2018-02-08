@@ -19,6 +19,9 @@ class Menu(object):
         self.exit_button = LabelButton("EXIT GAME", Props.SCREENLENGTH * .45, Props.SCREENHEIGHT * .3, 80, 40, Props.white)
         self.play_button = LabelButton("PLAY GAME", Props.SCREENLENGTH * .45, Props.SCREENHEIGHT * .2, 80, 40, Props.white)
 
+        self.buttons = pygame.sprite.Group()
+        self.buttons.add(self.exit_button, self.play_button, self.music.music_button)
+
     def display_toggle_music(self, surface, screen):
         self.toggle_music_button.draw(surface, screen)
 
@@ -33,16 +36,13 @@ class Menu(object):
     def process_user_input(self, event):
         state = States.MENU
 
-        if pygame.mouse.get_pressed()[0] == 1:
-            if self.exit_button.is_clicked(event):
-                state = States.QUIT
-            elif self.play_button.is_clicked(event):
-                state = States.BOARD_GAME
-            elif self.music.music_button.is_clicked(event):
-                self.music.toggle_music()
+        self.buttons.update(event)
 
-        self.exit_button.update_highlight_state(event)
-        self.play_button.update_highlight_state(event)
-        self.music.music_button.update_highlight_state(event)
+        if self.exit_button.is_clicked:
+            state = States.QUIT
+        elif self.play_button.is_clicked:
+            state = States.BOARD_GAME
+        elif self.music.music_button.is_clicked:
+            self.music.toggle_music()
 
         return state
