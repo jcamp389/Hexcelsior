@@ -14,7 +14,7 @@ class Music(object):
     def __init__(self):
         self.music_button = LabelButton("TOGGLE MUSIC", Props.SCREENLENGTH * .9, 0, 100, 40, Props.white)
         self.music_is_playing = True
-        self.playlist = ['sounds/Pippin.ogg','sounds/Hidden_Past.ogg', 'sounds/Thatched_Villagers.ogg', 'sounds/Mountain_Emperor.ogg',
+        self.playlist = ['sounds/Hidden_Past.ogg','sounds/Pippin.ogg', 'sounds/Thatched_Villagers.ogg', 'sounds/Mountain_Emperor.ogg',
                          'sounds/Moorland.ogg','sounds/Galway.ogg', 'sounds/Angevin_B.ogg']
         self.first_song = self.playlist[0]
         self.song_end = pygame.USEREVENT + 1
