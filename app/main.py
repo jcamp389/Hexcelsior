@@ -20,7 +20,7 @@ class Main(object):
         # Our menu and game screens
         self.music = Music()
         States.MENU = Menu(self.screen, self.surface, self.music)
-        self.game = Game(self.screen, self.surface, self.music)
+        self.game = None
 
     def process_user_input(self, state):
         for event in pygame.event.get():
@@ -31,6 +31,8 @@ class Main(object):
                 state = States.QUIT
             if state == States.MENU:
                 state = States.MENU.process_user_input(event)
+                if state == States.BOARD_GAME:
+                    self.game = Game(self.screen, self.surface, self.music)
             elif state == States.BOARD_GAME:
                 state = self.game.process_user_input(event)
 

@@ -1,6 +1,70 @@
 import pygame
 from app.properties import Properties as Props
 
+class Unit(pygame.sprite.Sprite):
+    def __init__(self):
+        self.movement = None
+        self.cost = None
+        self.range = None
+        self.tile = None
+        self.defeats = None
+        self.loses_to = None
+
+
+
+
+class Archer(Unit):
+    def __init__(self, tile):
+        Unit.__init__(self)
+        self.movement = 1
+        self.cost = 4
+        self.range = 2
+        self.tile = tile
+        self.image = pygame.image.load('images/bow.png')
+        self.defeats = [Swordsman, Spearman, Horseman]
+        self.loses_to = [Swordsman, Spearman, Horseman]
+
+
+class Swordsman(Unit):
+    def __init__(self, tile):
+        Unit.__init__(self)
+        self.movement = 1
+        self.cost = 3
+        self.range = 1
+        self.tile = tile
+        self.image = pygame.image.load('images/sword.png')
+        self.defeats = [Spearman]
+        self.loses_to = [Archer, Horseman]
+
+
+class Spearman(Unit):
+    def __init__(self, tile):
+        Unit.__init__(self)
+        self.movement = 1
+        self.cost = 3
+        self.range = 1
+        self.tile = tile
+        self.image = pygame.image.load('images/spear.png')
+        self.defeats = [Horseman]
+        self.loses_to = [Swordsman, Archer]
+
+
+class Horseman(Unit):
+    def __init__(self, tile):
+        Unit.__init__(self)
+        self.movement = 2
+        self.cost = 3
+        self.range = 1
+        self.tile = tile
+        self.image = pygame.image.load('images/horseman1.png')
+        self.defeats = [Swordsman]
+        self.loses_to = [Spearman, Archer]
+
+
+
+
+
+
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, color):
