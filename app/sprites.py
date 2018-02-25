@@ -203,7 +203,7 @@ class ColoredBoardTile(BoardTile):
         pygame.draw.polygon(background, Props.grey, self.get_tile_coordinates(), 2)
 
 class ImageBoardTile(BoardTile):
-    def __init__(self, top_right, top_left, left, bot_left, bot_right, right, image, image_highlighted):
+    def __init__(self, top_right, top_left, left, bot_left, bot_right, right, image, image_highlighted, base_image):
         pygame.sprite.Sprite.__init__(self)
 
         self.top_left = top_left
@@ -214,10 +214,17 @@ class ImageBoardTile(BoardTile):
         self.left = left
         self.image = pygame.transform.scale(image, (int(self.right[0]-self.left[0]), int(self.bot_right[1]-self.top_right[1])))
         self.image_highlighted = pygame.transform.scale(image_highlighted, (int(self.right[0]-self.left[0]), int(self.bot_right[1]-self.top_right[1])))
+        self.base_image = pygame.transform.scale(base_image, (int(self.right[0]-self.left[0]), int(self.bot_right[1]-self.top_right[1])))
 
     def draw(self, screen, is_base_tile=False):
-        if self.contains(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-            screen.blit(self.image_highlighted, (int(self.left[0]), int(self.top_left[1])))
+
+        if is_base_tile:
+            screen.blit(self.base_image, (int(self.left[0]), int(self.top_left[1])))
         else:
-            screen.blit(self.image, (int(self.left[0]), int(self.top_left[1])))
+            if self.contains(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
+                screen.blit(self.image_highlighted, (int(self.left[0]), int(self.top_left[1])))
+            else:
+                screen.blit(self.image, (int(self.left[0]), int(self.top_left[1])))
+
+
         pygame.draw.polygon(screen, Props.grey, self.get_tile_coordinates(), 2)

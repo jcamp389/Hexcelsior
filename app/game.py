@@ -88,7 +88,7 @@ class Game(object):
                     (x, y + (dimensions * .5)),
                     (x + (dimensions * .25), y + (dimensions * .925)),
                     (x + (dimensions * .75), y + (dimensions * .925)),
-                    (x + dimensions, y + (dimensions * .5)), image, image_highlighted)
+                    (x + dimensions, y + (dimensions * .5)), image, image_highlighted, pygame.image.load('images/Intro_Screen_Background.jpg') )
                 board_matrix[i].append(h)
         return board_matrix
 
