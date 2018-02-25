@@ -1,5 +1,5 @@
 from app.properties import Properties as Props
-from app.sprites import BoardTile, LabelButton, ImageButton
+from app.sprites import ImageBoardTile, LabelButton, ImageButton
 from app.states import States
 import random
 import pygame
@@ -82,18 +82,34 @@ class Game(object):
                 # Account for the board not starting in the exact top-left corner of the screen.
                 x += self.board_offset[0]
                 y += self.board_offset[1]
-
-                h = BoardTile((x + (dimensions * .75), y + (dimensions * .075)),
+                image, image_highlighted = self.random_tile_image()
+                h = ImageBoardTile((x + (dimensions * .75), y + (dimensions * .075)),
                     (x + (dimensions * .25), y + (dimensions * .075)),
                     (x, y + (dimensions * .5)),
                     (x + (dimensions * .25), y + (dimensions * .925)),
                     (x + (dimensions * .75), y + (dimensions * .925)),
-                    (x + dimensions, y + (dimensions * .5)), self.random_tile())
+                    (x + dimensions, y + (dimensions * .5)), image, image_highlighted)
                 board_matrix[i].append(h)
         return board_matrix
 
-    def random_tile(self):
+    def random_tile_color(self):
         possible_tiles = [Props.red, Props.white, Props.green, Props.brown, Props.yellow]
+        index = random.randint(0, len(possible_tiles) - 1)
+        return possible_tiles[index]
+
+    def random_tile_image(self):
+        desert = pygame.image.load('images/desert_tile.png')
+        desert_highlighted = pygame.image.load('images/desert_tile_highlighted.png')
+        forest = pygame.image.load('images/forest_tile.png')
+        forest_highlighted = pygame.image.load('images/forest_tile_highlighted.png')
+        grass = pygame.image.load('images/grass_tile.png')
+        grass_highlighted = pygame.image.load('images/grass_tile_highlighted.png')
+        mountain = pygame.image.load('images/mountain_tile.png')
+        mountain_highlighted = pygame.image.load('images/mountain_tile_highlighted.png')
+        possible_tiles = [(desert, desert_highlighted),
+                          (forest, forest_highlighted),
+                          (grass, grass_highlighted),
+                          (mountain, mountain_highlighted)]
         index = random.randint(0, len(possible_tiles) - 1)
         return possible_tiles[index]
 
@@ -151,23 +167,11 @@ class Game(object):
             self.current_phase = self.PHASE_PLANNING
             self.turn_number += 1
 
-
-
-
     def board_game(self):
-        currently_highlighted_tile = None
         for i in range(0, len(self.board)):
             for j in range(0, len(self.board[0])):
                 current_tile = self.board[i][j]
-                if current_tile.contains(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-                    currently_highlighted_tile = current_tile
-                draw_color = Props.grey if current_tile == currently_highlighted_tile else current_tile.tile_color
-                if self.is_base_tile(current_tile):
-                    draw_color = Props.black
-
-                pygame.draw.polygon(self.background, draw_color, current_tile.get_tile_coordinates(), 0)
-                # border pass
-                pygame.draw.polygon(self.background, Props.grey, current_tile.get_tile_coordinates(), 2)
+                current_tile.draw(self.background, is_base_tile=self.is_base_tile(current_tile))
 
     def process_user_input(self, event):
         state = States.BOARD_GAME
