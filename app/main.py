@@ -5,6 +5,7 @@ from app.game import Game
 from app.music import Music
 from app.states import States
 
+fpsClock = pygame.time.Clock()
 
 class Main(object):
     def __init__(self):
@@ -45,6 +46,8 @@ class Main(object):
             self.game.refresh()
 
     def run(self):
+        fpsClock.tick(10)
+
         self.music.play_first_song()
         state = States.MENU
         while state != States.QUIT:

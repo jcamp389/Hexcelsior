@@ -12,3 +12,4 @@ class Properties(object):
     green = (0, 255, 0)
     white = (255, 255, 255)
     grey = (64, 64, 64)
+    sky_blue = (159, 220, 248)

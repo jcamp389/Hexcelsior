@@ -37,16 +37,18 @@ class Game(object):
         self.BOARDLENGTH = Props.SCREENLENGTH * .8
         self.ready_button = LabelButton("READY", Props.SCREENLENGTH * .6, Props.SCREENHEIGHT * 0, 100, 40, Props.white)
 
-        unit_scale_factor = int((self.BOARDHEIGHT/10) * .8)
-        self.bow = ImageButton('images/bow.png', 830, 115, unit_scale_factor, unit_scale_factor, Props.black)
-        self.sword = ImageButton('images/sword.png',870, 115, unit_scale_factor, unit_scale_factor, Props.black)
-        self.spear = ImageButton('images/spear.png', 910, 115, unit_scale_factor, unit_scale_factor, Props.black)
-        self.horseman = ImageButton('images/horseman1.png', 950, 115, unit_scale_factor, unit_scale_factor, Props.black)
+        self.UNIT_SCALE_FACTOR = int((self.BOARDHEIGHT/10) * .8)
+        self.bow = ImageButton('images/bow.png', 830, 115, self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR, Props.black)
+        self.sword = ImageButton('images/sword.png',870, 115, self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR, Props.black)
+        self.spear = ImageButton('images/spear.png', 910, 115, self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR, Props.black)
+        self.horseman = ImageButton('images/horseman1.png', 950, 115, self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR, Props.black)
 
         self.changephase(should_change_phase=False)
         self.board = self.board_initializer()
 
         self.turn_number = 1
+
+        self.selected_unit = None
 
         # we are manually going to create players for now
         player_1 = Player(name="Joel", number=1, color=Props.grey, base_tile=self.board[4][5])
@@ -127,6 +129,9 @@ class Game(object):
         Utils.display_xy(self.screen)
         self.music.music_button.draw(self.screen)
 
+        if self.selected_unit is not None:
+            self.screen.blit(self.selected_unit, pygame.mouse.get_pos())
+
         if self.current_phase == self.PHASE_PLANNING:
             self.ready_button.set_visibility(visible=True)
             self.ready_button.set_enabled(enabled=True)
@@ -167,6 +172,17 @@ class Game(object):
             self.current_phase = self.PHASE_PLANNING
             self.turn_number += 1
 
+        phase_is_planning = self.current_phase == self.PHASE_PLANNING
+        self.bow.set_enabled(phase_is_planning)
+        self.sword.set_enabled(phase_is_planning)
+        self.spear.set_enabled(phase_is_planning)
+        self.horseman.set_enabled(phase_is_planning)
+
+
+
+        if not phase_is_planning:
+            self.selected_unit = None
+
     def board_game(self):
         for i in range(0, len(self.board)):
             for j in range(0, len(self.board[0])):
@@ -185,5 +201,27 @@ class Game(object):
             self.changephase()
         elif self.back_button.is_clicked:
             state = States.MENU
-
+        elif self.bow.is_clicked:
+            self.selected_unit = pygame.image.load("images/bow.png")
+            self.selected_unit = pygame.transform.scale(self.selected_unit, (self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR))
+        elif self.sword.is_clicked:
+            self.selected_unit = pygame.image.load("images/sword.png")
+            self.selected_unit = pygame.transform.scale(self.selected_unit, (self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR))
+        elif self.spear.is_clicked:
+            self.selected_unit = pygame.image.load("images/spear.png")
+            self.selected_unit = pygame.transform.scale(self.selected_unit, (self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR))
+        elif self.horseman.is_clicked:
+            self.selected_unit = pygame.image.load("images/horseman1.png")
+            self.selected_unit = pygame.transform.scale(self.selected_unit, (self.UNIT_SCALE_FACTOR, self.UNIT_SCALE_FACTOR))
+        if (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or\
+            (event.type == pygame.MOUSEBUTTONDOWN and event.button == 3):
+            self.selected_unit = None
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.selected_unit is not None\
+                and self.current_phase == self.PHASE_PLANNING:
+            for row in self.board:
+                for tile in row:
+                    if tile.contains(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])\
+                            and tile.unit_in_tile is None:
+                        tile.unit_in_tile = self.selected_unit
+                        self.selected_unit = None
         return state

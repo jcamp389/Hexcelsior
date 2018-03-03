@@ -87,7 +87,11 @@ class Button(pygame.sprite.Sprite):
         if self.visible is False:
             return
 
-        background_color = self.highlighted_color if self.is_highlighted else self.color
+
+        if not self.enabled:
+            background_color = Props.grey
+        else:
+            background_color = self.highlighted_color if self.is_highlighted else self.color
         rect = pygame.draw.rect(surface, background_color, pygame.Rect(self.x, self.y, self.width, self.height), 2)
         self.draw_content(rect, surface)
 
@@ -152,6 +156,9 @@ class ImageButton(Button):
 
 
 class BoardTile(pygame.sprite.Sprite):
+    def __init__(self):
+        self.unit_in_tile = None
+
 
     def get_tile_coordinates(self):
         return self.top_left, self.top_right, self.right, self.bot_right, self.bot_left, self.left
@@ -180,7 +187,7 @@ class BoardTile(pygame.sprite.Sprite):
 
 class ColoredBoardTile(BoardTile):
     def __init__(self, top_right, top_left, left, bot_left, bot_right, right, tile_color):
-        pygame.sprite.Sprite.__init__(self)
+        super(ColoredBoardTile, self).__init__()
 
         self.top_left = top_left
         self.top_right = top_right
@@ -204,7 +211,7 @@ class ColoredBoardTile(BoardTile):
 
 class ImageBoardTile(BoardTile):
     def __init__(self, top_right, top_left, left, bot_left, bot_right, right, image, image_highlighted, base_image):
-        pygame.sprite.Sprite.__init__(self)
+        super(ImageBoardTile, self).__init__()
 
         self.top_left = top_left
         self.top_right = top_right
@@ -225,6 +232,9 @@ class ImageBoardTile(BoardTile):
                 screen.blit(self.image_highlighted, (int(self.left[0]), int(self.top_left[1])))
             else:
                 screen.blit(self.image, (int(self.left[0]), int(self.top_left[1])))
+
+            if self.unit_in_tile is not None:
+                screen.blit(self.unit_in_tile, (int(self.left[0]), int(self.top_left[1])))
 
 
         pygame.draw.polygon(screen, Props.grey, self.get_tile_coordinates(), 2)
